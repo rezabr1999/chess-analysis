@@ -1,2 +1,1 @@
-# lichess
-lichess client for web 
+# chess analysis 
