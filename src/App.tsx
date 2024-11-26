@@ -9,11 +9,14 @@ function App() {
   const [moves, setMoves] = useState<string[]>([]);
   const [currentMove, setCurrentMove] = useState<number>(0);
 
+  const [gameList, setGameList] = useState<any>([]);
+
   const addGame = () => {
     let gameNotations = parse(pgn, { startRule: "game" });
     const parsedMoves = gameNotations.moves.map(
       (move: any) => move.notation.notation
     );
+    setGameList([...gameList, String(pgn)]);
     setMoves(parsedMoves);
     setGame(new Chess());
     setCurrentMove(0);
@@ -29,6 +32,7 @@ function App() {
       setGame(newGame);
       setCurrentMove(currentMove + 1);
     }
+    console.log(gameList);
   }
 
   function prevMove() {
