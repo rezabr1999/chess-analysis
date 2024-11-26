@@ -3,20 +3,22 @@ import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { parse } from "@mliebelt/pgn-parser";
 
+import ChessBoaordComponent from "./components/ChessBoardComponent";
+
 function App() {
   const [pgn, setPgn] = useState<string>("");
   const [game, setGame] = useState<Chess>(new Chess());
   const [moves, setMoves] = useState<string[]>([]);
   const [currentMove, setCurrentMove] = useState<number>(0);
 
-  const [gameList, setGameList] = useState<any>([]);
+  const [recentGames, setRecentGames] = useState<any>([]);
 
   const addGame = () => {
     let gameNotations = parse(pgn, { startRule: "game" });
     const parsedMoves = gameNotations.moves.map(
       (move: any) => move.notation.notation
     );
-    setGameList([...gameList, String(pgn)]);
+    setRecentGames([...recentGames, String(pgn)]);
     setMoves(parsedMoves);
     setGame(new Chess());
     setCurrentMove(0);
@@ -70,28 +72,11 @@ function App() {
       </div>
 
       <div className="mt-10 w-full max-w-md">
-        <div className="bg-gray-800 shadow-xl rounded-xl overflow-hidden flex flex-col gap-3">
-          <Chessboard position={game.fen()} />
-          <div className="flex gap-4 p-3">
-            <button
-              onClick={prevMove}
-              title="prev"
-              type="button"
-              className="p-4 bg-emerald-600 rounded-lg flex-1"
-            >
-              Prev Move
-            </button>
-
-            <button
-              onClick={nextMove}
-              title="next"
-              type="button"
-              className="p-4 bg-sky-700 rounded-lg flex-1"
-            >
-              Next Move
-            </button>
-          </div>
-        </div>
+        <ChessBoaordComponent
+          game={game}
+          nextMove={nextMove}
+          prevMove={prevMove}
+        />
       </div>
     </div>
   );
